@@ -3,11 +3,11 @@ import { Link } from "react-router-dom";
 import Footer from "../../../components/footer/Footer";
 import Header from "../../../components/header/Header";
 import useDocumentTitle from "../../../components/useDocumentTitle";
-import Popup from "reactjs-popup";
+//import Popup from "reactjs-popup";
 import "reactjs-popup/dist/index.css";
 import Web3ReactConnectionComponent from "./Web3ReactConnectionComponent";
 
-const wallets = [
+/*const wallets = [
     {
         title: "coibase",
         p: "wallet that works on both mobile and through a browser extension",
@@ -38,11 +38,11 @@ const wallets = [
         p: "Log in with Google,  Facebook, or other OAuth provider",
         popup: "error",
     },
-];
+];*/
 
 const ConnectWallet = () => {
     const ref = useRef();
-    const closeTooltip = () => ref.current.close();
+    //const closeTooltip = () => ref.current.close();
     useDocumentTitle("Wallet ");
     return (
         <div className="effect">
