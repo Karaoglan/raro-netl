@@ -1,17 +1,24 @@
-import React from 'react';
-import ReactDOM from 'react-dom/client';
-import './index.css';
-import App from './App';
-import reportWebVitals from './reportWebVitals';
+import "./assets/css/plugins/bootstrap.min.css";
+import "remixicon/fonts/remixicon.css";
+import "./assets/scss/style.scss";
+import { Web3ReactProvider } from "@web3-react/core";
+import { Web3Provider } from "@ethersproject/providers";
 
-const root = ReactDOM.createRoot(document.getElementById('root'));
-root.render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>
-);
+import Router from "./Router/routes";
+function App() {
+    const getLibrary = (provider) => {
+        const library = new Web3Provider(provider, "any");
+        library.pollingInterval = 15000;
+        return library;
+    };
 
-// If you want to start measuring performance in your app, pass a function
-// to log results (for example: reportWebVitals(console.log))
-// or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
-reportWebVitals();
+    return (
+        <Web3ReactProvider getLibrary={getLibrary}>
+            <div className="App overflow-hidden">
+                <Router />
+            </div>
+        </Web3ReactProvider>
+    );
+}
+
+export default App;
