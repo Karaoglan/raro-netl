@@ -1,4 +1,4 @@
-import React, { useRef } from "react";
+import React from "react";
 import { Link } from "react-router-dom";
 import Footer from "../../../components/footer/Footer";
 import Header from "../../../components/header/Header";
@@ -41,7 +41,7 @@ import Web3ReactConnectionComponent from "./Web3ReactConnectionComponent";
 ];*/
 
 const ConnectWallet = () => {
-    const ref = useRef();
+    //const ref = useRef();
     //const closeTooltip = () => ref.current.close();
     useDocumentTitle("Wallet ");
     return (
