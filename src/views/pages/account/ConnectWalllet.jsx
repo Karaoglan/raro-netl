@@ -1,13 +1,15 @@
-import React from "react";
+import { useWeb3React } from "@web3-react/core";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import Popup from "reactjs-popup";
+import "reactjs-popup/dist/index.css";
 import Footer from "../../../components/footer/Footer";
 import Header from "../../../components/header/Header";
 import useDocumentTitle from "../../../components/useDocumentTitle";
-//import Popup from "reactjs-popup";
-import "reactjs-popup/dist/index.css";
+import { injected } from "../../../helpers/connectors";
 import Web3ReactConnectionComponent from "./Web3ReactConnectionComponent";
 
-/*const wallets = [
+const wallets = [
     {
         title: "coibase",
         p: "wallet that works on both mobile and through a browser extension",
@@ -38,12 +40,38 @@ import Web3ReactConnectionComponent from "./Web3ReactConnectionComponent";
         p: "Log in with Google,  Facebook, or other OAuth provider",
         popup: "error",
     },
-];*/
+];
 
 const ConnectWallet = () => {
-    //const ref = useRef();
-    //const closeTooltip = () => ref.current.close();
+    const web3reactContext = useWeb3React();
     useDocumentTitle("Wallet ");
+
+    const connectMetamask = async () => {
+        try {
+            await web3reactContext.activate(injected);
+        } catch (ex) {
+            console.log(ex);
+        }
+    };
+
+    const walletCard = (val) => {
+        return (
+            <button
+                className="box in__wallet space-y-10"
+                onClick={connectMetamask}
+            >
+                <div className="logo">
+                    <img
+                        src={`img/icons/${val.title}.svg`}
+                        alt="logo_community"
+                    />
+                </div>
+                <h5 className="text-center">{val.title}</h5>
+                <p className="text-center">{val.p}</p>
+            </button>
+        );
+    };
+
     return (
         <div className="effect">
             <Header />
@@ -70,6 +98,199 @@ const ConnectWallet = () => {
                     </div>
                 </div>
 
+                <div className="row justify-content-center">
+                    <div className="col-lg-9">
+                        <div className="wallets">
+                            <div className="row mb-20_reset">
+                                {wallets.map((val, i) => (
+                                    <div className="col-lg-4" key={i}>
+                                        {web3reactContext.account ? (
+                                            <Popup
+                                                className="custom"
+                                                trigger={() => walletCard(val)}
+                                                position="bottom center"
+                                            >
+                                                {(close) => (
+                                                    <div>
+                                                        <div
+                                                            className="popup"
+                                                            id="popup_bid"
+                                                            tabIndex={-1}
+                                                            role="dialog"
+                                                            aria-hidden="true"
+                                                        >
+                                                            <div>
+                                                                <button
+                                                                    type="button"
+                                                                    className="button close"
+                                                                    data-dismiss="modal"
+                                                                    aria-label="Close"
+                                                                    onClick={
+                                                                        close
+                                                                    }
+                                                                >
+                                                                    <span aria-hidden="true">
+                                                                        ×
+                                                                    </span>
+                                                                </button>
+
+                                                                <div className="space-y-20">
+                                                                    <h3 className="text-center">
+                                                                        Wallet
+                                                                        Connected!
+                                                                    </h3>
+                                                                    <p className="text-center">
+                                                                        You have
+                                                                        successfully
+                                                                        connected
+                                                                        your
+                                                                        wallet,
+                                                                        now you
+                                                                        can
+                                                                        start
+                                                                        bidding
+                                                                        or
+                                                                        upload
+                                                                        your own
+                                                                        art!
+                                                                    </p>
+                                                                    <div className="d-flex justify-content-center space-x-20">
+                                                                        <Link
+                                                                            to="marketplace"
+                                                                            className="btn btn-dark"
+                                                                        >
+                                                                            Discover
+                                                                            Assets
+                                                                        </Link>
+                                                                        <Popup
+                                                                            className="custom"
+                                                                            trigger={
+                                                                                <button className="btn btn-grad">
+                                                                                    Create
+                                                                                    item
+                                                                                </button>
+                                                                            }
+                                                                            position="bottom center"
+                                                                        >
+                                                                            {(
+                                                                                closeTrigger
+                                                                            ) => (
+                                                                                <div>
+                                                                                    <div
+                                                                                        className="popup"
+                                                                                        id="popup_bid"
+                                                                                        tabIndex={
+                                                                                            -1
+                                                                                        }
+                                                                                        role="dialog"
+                                                                                        aria-hidden="true"
+                                                                                    >
+                                                                                        <div>
+                                                                                            <button
+                                                                                                type="button"
+                                                                                                className="button close"
+                                                                                                data-dismiss="modal"
+                                                                                                aria-label="Close"
+                                                                                                onClick={
+                                                                                                    closeTrigger
+                                                                                                }
+                                                                                            >
+                                                                                                <span aria-hidden="true">
+                                                                                                    ×
+                                                                                                </span>
+                                                                                            </button>
+                                                                                            <div className="space-y-20">
+                                                                                                <h3 className="color_red">
+                                                                                                    Error!
+                                                                                                </h3>
+                                                                                                <p>
+                                                                                                    User
+                                                                                                    rejected
+                                                                                                    the
+                                                                                                    request..{" "}
+                                                                                                    <br />
+                                                                                                    If
+                                                                                                    the
+                                                                                                    problem
+                                                                                                    persist
+                                                                                                    please
+                                                                                                    Contact
+                                                                                                    support
+                                                                                                </p>
+                                                                                                <button
+                                                                                                    to="#"
+                                                                                                    className="btn btn-primary"
+                                                                                                >
+                                                                                                    Try
+                                                                                                    again
+                                                                                                </button>
+                                                                                            </div>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </div>
+                                                                            )}
+                                                                        </Popup>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                )}
+                                            </Popup>
+                                        ) : (
+                                            <Popup
+                                                className="custom"
+                                                trigger={() => walletCard(val)}
+                                                modal
+                                                position="bottom center"
+                                            >
+                                                {(close) => (
+                                                    <div>
+                                                        <div
+                                                            className="popup"
+                                                            id="popup_bid"
+                                                            tabIndex={-1}
+                                                            role="dialog"
+                                                            aria-hidden="true"
+                                                        >
+                                                            <div>
+                                                                <button
+                                                                    type="button"
+                                                                    className="button close"
+                                                                    data-dismiss="modal"
+                                                                    aria-label="Close"
+                                                                    onClick={
+                                                                        close
+                                                                    }
+                                                                >
+                                                                    <span aria-hidden="true">
+                                                                        ×
+                                                                    </span>
+                                                                </button>
+
+                                                                <div className="space-y-20">
+                                                                    <h3
+                                                                        className="text-center"
+                                                                        onClick={
+                                                                            connectMetamask
+                                                                        }
+                                                                    >
+                                                                        Connect
+                                                                        Wallet
+                                                                    </h3>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                )}
+                                            </Popup>
+                                        )}
+                                    </div>
+                                ))}
+                            </div>
+                        </div>
+                    </div>
+                </div>
                 <div>
                     REPLACE HERE BELOW
                     <Web3ReactConnectionComponent />
@@ -81,109 +302,3 @@ const ConnectWallet = () => {
 };
 
 export default ConnectWallet;
-
-/*
-<div className="row justify-content-center">
-          <div className="col-lg-9">
-            <div className="wallets">
-              <div className="row mb-20_reset">
-                {wallets.map((val, i) => (
-                  <div className="col-lg-4" key={i}>
-                    <Popup
-                      className="custom"
-                      ref={ref}
-                      trigger={
-                        <button className="box in__wallet space-y-10">
-                          <div className="logo">
-                            <img
-                              src={`img/icons/${val.title}.svg`}
-                              alt="logo_community"
-                            />
-                          </div>
-                          <h5 className="text-center">{val.title}</h5>
-                          <p className="text-center">{val.p}</p>
-                        </button>
-                      }
-                      position="bottom center">
-                      <div>
-                        <div
-                          className="popup"
-                          id="popup_bid"
-                          tabIndex={-1}
-                          role="dialog"
-                          aria-hidden="true">
-                          <div>
-                            <button
-                              type="button"
-                              className="button close"
-                              data-dismiss="modal"
-                              aria-label="Close"
-                              onClick={closeTooltip}>
-                              <span aria-hidden="true">×</span>
-                            </button>
-
-                            <div className="space-y-20">
-                              <h3 className="text-center">Wallet Connected!</h3>
-                              <p className="text-center">
-                                You have successfully connected your wallet, now
-                                you can start bidding or upload your own art!
-                              </p>
-                              <div className="d-flex justify-content-center space-x-20">
-                                <Link to="marketplace" className="btn btn-dark">
-                                  Discover Assets
-                                </Link>
-                                <Popup
-                                  className="custom"
-                                  ref={ref}
-                                  trigger={
-                                    <button className="btn btn-grad">
-                                      Create item
-                                    </button>
-                                  }
-                                  position="bottom center">
-                                  <div>
-                                    <div
-                                      className="popup"
-                                      id="popup_bid"
-                                      tabIndex={-1}
-                                      role="dialog"
-                                      aria-hidden="true">
-                                      <div>
-                                        <button
-                                          type="button"
-                                          className="button close"
-                                          data-dismiss="modal"
-                                          aria-label="Close"
-                                          onClick={closeTooltip}>
-                                          <span aria-hidden="true">×</span>
-                                        </button>
-                                        <div className="space-y-20">
-                                          <h3 className="color_red">Error!</h3>
-                                          <p>
-                                            User rejected the request.. <br />
-                                            If the problem persist please
-                                            Contact support
-                                          </p>
-                                          <button
-                                            to="#"
-                                            className="btn btn-primary">
-                                            Try again
-                                          </button>
-                                        </div>
-                                      </div>
-                                    </div>
-                                  </div>
-                                </Popup>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </Popup>
-                  </div>
-                ))}
-              </div>
-            </div>
-          </div>
-        </div>
-        */
