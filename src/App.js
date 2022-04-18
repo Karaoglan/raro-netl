@@ -7,6 +7,7 @@ import { Web3Provider } from "@ethersproject/providers";
 import Router from "./Router/routes";
 function App() {
     const getLibrary = (provider) => {
+        console.log('HELLO');
         const library = new Web3Provider(provider, "any");
         library.pollingInterval = 15000;
         return library;
