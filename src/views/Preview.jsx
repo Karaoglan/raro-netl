@@ -9,6 +9,7 @@ import Purshase from '../components/Preview/Purshase';
 import useDocumentTitle from '../components/useDocumentTitle';
 const Preview = () => {
   useDocumentTitle(' Raroin - Preview page ');
+  console.log('HELLO');
   return (
     <div>
       <Header />
